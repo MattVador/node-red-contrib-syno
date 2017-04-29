@@ -1,0 +1,51 @@
+<script type="text/javascript">
+	RED.nodes.registerType("DS Config", {
+		category: "config",
+		defaults: {
+			name: {value:"", required:false},
+			protocol: {value:"http", required:true},
+			apiVersion: {value:"6.0.2", required:true}
+		},
+		credentials: {
+			host: {type: "text",value:"", required:true},
+			port: {type: "text",value:"5000", required:true},
+			account: {type: "text"},
+			passwd: {type: "password"}
+		},
+		label: function() {
+			return this.name ? this.name : 'DS Config';
+		}
+	});
+</script>
+
+<script type="text/x-red" data-template-name="DS Config">
+	<div class="form-row">
+		<label for="node-config-input-name"><i class="fa fa-tag"></i> Name</label>
+		<input type="text" id="node-config-input-name" />
+	</div>
+	<div class="form-row">
+		<label for="node-config-input-host"><i class="fa fa-globe"></i> Host</label>
+		<select id="node-config-protocol" placeholder="http" style="width:76px">
+			<option value="http">http://</option>
+			<option value="https">https://</option>
+		</select>
+		<input type="text" id="node-config-input-host" placeholder="Host name or ip Address" style="width:186px" />
+		<span>:</span>
+		<input type="text" id="node-config-input-port" placeholder="5000" style="width:45px" />
+	</div>
+	<div class="form-row">
+		<label for="node-config-input-apiVersion"><i class="fa fa-tag"></i> Api version</label>
+		<input type="text" id="node-config-input-apiVersion" placeholder="6.0.2" />
+	</div>
+	<div class="form-row">
+		<label for="node-config-input-account"><i class="fa fa-user"></i> Account</label>
+		<input type="text" id="node-config-input-account" placeholder="Account" />
+	</div>
+	<div class="form-row">
+		<label for="node-config-input-passwd"><i class="fa fa-lock"></i> Password</label>
+		<input type="password" id="node-config-input-passwd" placeholder="Password" />
+	</div>
+	<div class="form-tips">
+		<p>Configure the connection to your Synology here.</p>
+	</div>
+</script>
