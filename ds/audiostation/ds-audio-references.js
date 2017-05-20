@@ -1,4 +1,4 @@
-var unknowHelp = 'Don\'t know what that does.<br/><br/>If you know, including the input data, please send me.'; 
+var unknowHelp = 'Don\'t know what that does.<br/><br/>If you know, including the input data, please send me.';
 var asReferences = {
 	'Cover': {
 		'getCover': {'help': unknowHelp, 'payload': {}},
@@ -478,35 +478,5 @@ var asReferences = {
 		},
 	}
 };
-var asKeysReferences = Object.keys(asReferences);
 
-function provideReferences(RED) {
-
-	// Provide list of methods
-	RED.httpAdmin.get('/syno/audiostation/references', function(req, res, next){
-		var arr = {};
-		for( var g in asKeysReferences ) {
-			arr[asKeysReferences[g]] = Object.keys(asReferences[asKeysReferences[g]]);
-		}
-		res.end(JSON.stringify(arr));
-		return;
-	});
-
-	// Returns infos for a given method reference.
-	RED.httpAdmin.get('/syno/audiostation/references/:reference', function(req, res, next){
-		var ref = req.params.reference;
-		var arr = {};
-
-		for( var g in asKeysReferences ) {
-			if( asReferences[asKeysReferences[g]][ref] != null ) {
-				arr = asReferences[asKeysReferences[g]][ref];
-				break;
-			}
-		}
-
-		res.end(JSON.stringify(arr));
-		return;
-	});
-}
-
-module.exports.provideReferences = provideReferences;
+module.exports = asReferences;
