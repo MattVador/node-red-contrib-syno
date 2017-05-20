@@ -1,0 +1,116 @@
+<script type="text/javascript">
+	RED.nodes.registerType("DS DSM", {
+		category : "synology",
+		color : "#10bea0",
+		icon : "ds-dsm.png",
+		defaults : {
+			dsm : {type : "DS Config", required : true},
+			name : {value : "", required : false},
+			topic : {value : "", required : false},
+			payload : {value : "", required : false}
+		},
+		inputs : 1,
+		outputs : 1,
+		paletteLabel : "DS DSM",
+		label : function() {
+			return this.name ? this.name : 'DS DSM';
+		},
+		oneditprepare : function() {
+			var valueTopic = $('#node-input-topic').val();
+			$("#node-input-topic").replaceWith('<select id="node-input-topic" name="node-input-topic">');
+			$('#node-input-topic').find('option').remove();
+
+			// Read a list of example value for the selected reference node
+			var refreshHint = function() {
+				var valueTopic = $('#node-input-topic').val();
+				$.ajax({
+					url : 'syno/dsm/references/' + valueTopic,
+					success : function(data) {
+						var ref = JSON.parse(data);
+
+						// Help on the current topic
+						var help = "Select a topic";
+						if (ref.help != null && ref.help != '')
+								help = ref.help;
+						$("#node-input-topic.form-tips div").replaceWith('<div>' + help + '</div>');
+
+						// Build a human readable text as hint on how to use the topic
+						var hint = "Select a topic.";
+						if (ref.help != null && ref.help != '') {
+							hint = 'Use a payload within the following optional attributes: <br/><pre><font size="2">{<br/>';
+							for ( var i in ref.payload) {
+								hint += '  "<strong>' + i + '</strong>":<i>' + ref.payload[i] + '</i>,<br/>';
+							}
+							if (Object.keys(ref.payload).length > 0)
+								hint = hint.substring(0, hint.length - 6);
+							hint += '<br/>}</font></pre>';
+						}
+						$("#node-input-payload.form-tips div").replaceWith('<div>' + hint + '</div>');
+					}
+				});
+			}
+
+			// Read list of possible reference nodes from server and add to dropdown
+			$.ajax({
+				url : 'syno/dsm/references',
+				success : function(data) {
+					var data = JSON.parse(data);
+					var grps = Object.keys(data);
+					for ( var g in grps) {
+						$('#node-input-topic').append('<optgroup label="' + grps[g] + '"></optgroup>');
+						var el = $('#node-input-topic').find('optgroup:last');
+						for ( var i in data[grps[g]]) {
+							el.append('<option value="' + data[grps[g]][i] + '">' + data[grps[g]][i] + '</option>');
+						}
+					}
+
+					// write back value
+					$('#node-input-topic').val(valueTopic);
+					refreshHint();
+				}
+			});
+
+			// Update hint on change of selection
+			$("#node-input-topic").change(function() {
+				refreshHint();
+			});
+		}
+	});
+</script>
+
+<script type="text/x-red" data-template-name="DS DSM">
+    <div class="form-row">
+        <label for="node-input-dsm"><i class="fa fa-server"></i> DSM</label>
+        <input type="text" id="node-input-dsm">
+    </div>
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+        <input type="text" id="node-input-name" />
+    </div>
+    <div class="form-row">
+        <label for="node-input-topic"><i class="fa fa-map-signs"></i> Topic</label>
+        <input type="text" id="node-input-topic" />
+    </div>
+    <div class="form-tips" id="node-input-topic" style="margin-top:5px margin-bottom:5px">
+        <div>
+          Select a topic.
+        </div>
+    </div>
+	<br/>
+    <div class="form-row">
+        <label for="node-input-payload"><i class="fa fa-envelope"></i> Payload</label>
+        <input type="text" id="node-input-payload" />
+    </div>
+    <div class="form-tips" id="node-input-payload" style="margin-top:5px margin-bottom:5px">
+        <div>
+          Select a topic.
+        </div>
+    </div>
+</script>
+
+<script type="text/x-red" data-help-name="DS DSM">
+   <p>Synology Disk Station Manager</p>
+   <p>Choose one of the topics</p>
+   <p>If no topic is given in <b>msg.topic</b>, then the topic in config is used.</p>
+   <p>If no payload is given in <b>msg.payload</b>, then the payload in config is used</p>
+</script>

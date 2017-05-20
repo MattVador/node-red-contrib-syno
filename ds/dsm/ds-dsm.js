@@ -1,11 +1,11 @@
 module.exports = function(RED) {
-	var asReferences = require('./ds-audio-references.js');
+	var dsmReferences = require('./ds-dsm-references.js');
 	var utils = require('./../ds-utils.js');
 
 	/************/
-	// DS Audio //
+	// DS DSM //
 	/************/
-	function DS_Audio_Node(config) {
+	function DS_DSM_Node(config) {
 		RED.nodes.createNode(this, config);
 
 		var node = this;
@@ -37,7 +37,7 @@ module.exports = function(RED) {
 					return;
 				}
 
-				node.dsmNode.syno.as[topic](payload, function(error, data) {
+				node.dsmNode.syno.dsm[topic](payload, function(error, data) {
 					if( error )
 						node.error(error);
 					else {
@@ -51,10 +51,10 @@ module.exports = function(RED) {
 		}
 	}
 
-	RED.nodes.registerType("DS Audio", DS_Audio_Node);
+	RED.nodes.registerType("DS DSM", DS_DSM_Node);
 
 	/* ---------------------------------------------------------------------------
 	 * Backend informations
 	 * -------------------------------------------------------------------------*/
-	utils.provideReferences(RED, 'audiostation', asReferences);
+	utils.provideReferences(RED, 'dsm', dsmReferences);
 };

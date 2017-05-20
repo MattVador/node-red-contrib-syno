@@ -5,7 +5,8 @@
 	"node-red": {
 		"nodes": {
 			"ds-config": "ds/ds-config.js",
-			"ds-audiostation": "ds/audiostation/ds-audio.js"
+			"ds-audiostation": "ds/audiostation/ds-audio.js",
+			"ds-dsm": "ds/dsm/ds-dsm.js"
 		}
 	},
 	"dependencies": {
