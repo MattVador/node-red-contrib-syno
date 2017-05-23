@@ -1,8 +1,8 @@
 <script type="text/javascript">
-	RED.nodes.registerType("DS Audio", {
+	RED.nodes.registerType("DS Download", {
 		category: "synology",
-		color: "#10bea0",
-		icon: "ds-audio.png",
+		color: "#fb8c00",
+		icon: "ds-download.png",
 		defaults: {
 			dsm: {type:"DS Config", required:true},
 			name: {value:"", required:false},
@@ -11,9 +11,9 @@
 		},
 		inputs:1,
 		outputs:1,
-		paletteLabel: "DS Audio",
+		paletteLabel: "DS Download",
 		label: function() {
-			return this.name ? this.name : 'DS Audio';
+			return this.name ? this.name : 'DS Download';
 		},
 		oneditprepare: function() {
 			var valueTopic = $('#node-input-topic').val();
@@ -24,7 +24,7 @@
 			var refreshHint = function() {
 				var valueTopic = $('#node-input-topic').val();
 				$.ajax({
-					url: 'syno/audiostation/references/' + valueTopic,
+					url: 'syno/downloadstation/references/' + valueTopic,
 					success: function(data) {
 						var ref = JSON.parse(data);
 
@@ -52,7 +52,7 @@
 
 			// Read list of possible reference nodes from server and add to dropdown
 			$.ajax({
-				url: 'syno/audiostation/references',
+				url: 'syno/downloadstation/references',
 				success: function(data) {
 					var data = JSON.parse(data);
 					var grps = Object.keys(data);
@@ -78,7 +78,7 @@
 	});
 </script>
 
-<script type="text/x-red" data-template-name="DS Audio">
+<script type="text/x-red" data-template-name="DS Download">
     <div class="form-row">
         <label for="node-input-dsm"><i class="fa fa-server"></i> DSM</label>
         <input type="text" id="node-input-dsm">
@@ -108,8 +108,8 @@
     </div>
 </script>
 
-<script type="text/x-red" data-help-name="DS Audio">
-   <p>Synology Audio Station</p>
+<script type="text/x-red" data-help-name="DS Download">
+   <p>Synology Download Station</p>
    <p>Choose one of the topics</p>
    <p>If no topic is given in <b>msg.topic</b>, then the topic in config is used.</p>
    <p>If no payload is given in <b>msg.payload</b>, then the payload in config is used</p>

@@ -9,14 +9,14 @@ npm install node-red-contrib-syno
 ```
 
 ## Usage
-This package add 1 node (DS Audio) in Synology categorie and 1 config node (DS Config) to Node-RED.
+This package add 6 node (DS Audio, DS Cam, DS Download, DS DSM, DS File, DS Video) in Synology categorie and 1 config node (DS Config) to Node-RED.
 
-DS Audio node expect the following :
+Each node expect the following :
 * `topic` : A string - What you want to do (ex: `list songs`) - An extra help is given in the edit dialog. 
 * `payload`: An object - Specific data depending of the topic - An extra help is given in the edit dialog.
 
 
-DS Audio node comprises the following options:
+Each node comprises the following options:
 
 * **Topic**: What you want to do (ex: `list songs`) - An extra help is given in the edit dialog.
 * **Payload**: Specific data depending of the topic - An extra help is given in the edit dialog.

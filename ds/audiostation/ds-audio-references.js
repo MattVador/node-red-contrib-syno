@@ -1,7 +1,21 @@
-var unknowHelp = 'Don\'t know what that does.<br/><br/>If you know, including the input data, please send me.'; 
+var unknowHelp = 'Don\'t know what that does.<br/><br/>If you know, including the input data, please send me.';
+var unknownCalls = [
+	'getCover',
+	'setLyrics',
+	'setPasswordRemotePlayer',
+	'testPasswordRemotePlayer',
+	'removeMissingPlaylist',
+	'saveSearchPlaylist',
+	'deleteSonginfoProxy',
+	'getSonginfoProxy',
+	'getStreamIdProxy',
+	'stream',
+	'streamProxy',
+	'transcodeStream'
+];
+
 var asReferences = {
 	'Cover': {
-		'getCover': {'help': unknowHelp, 'payload': {}},
 		'getFolderCover': {
 			'help': 'Retreive the image cover of a folder',
 			'payload': {
@@ -13,7 +27,7 @@ var asReferences = {
 			'payload': {
 				"id":"id of the song"
 			}
-		},
+		}
 	},
 	'Lyric': {
 		'getLyrics': {
@@ -29,8 +43,7 @@ var asReferences = {
 				"title":"title of the song (required)",
 				"artist":"name of the artist (required)"
 			}
-		},
-		'setLyrics': {'help': unknowHelp, 'payload': {}},
+		}
 	},
 	'Misc': {
 		'getInfo': {
@@ -78,7 +91,7 @@ var asReferences = {
 				"sort_by":"",
 				"sort_direction":"\"ASC\" for ascending ou \"DESC\" for descending"
 			}
-		},
+		}
 	},
 	'Player': {
 		'controlRemotePlayer': {
@@ -139,8 +152,6 @@ var asReferences = {
 				"subplayer_id":"???"
 			}
 		},
-		'setPasswordRemotePlayer': {'help': unknowHelp, 'payload': {}},
-		'testPasswordRemotePlayer': {'help': unknowHelp, 'payload': {}},
 		'updatePlayListRemotePlayer': {
 			'help': 'Update the playlist of a remote player',
 			'payload': {
@@ -166,7 +177,7 @@ var asReferences = {
 \"folder\", \"id\":id of the folder, \"recursive\":true or false, \"sort_by\":\"song_rating\", \"sort_direction\":\"ASC\" for ascending ou \"DESC\" for descending}\n\n\
 \"playlist\", \"id\":id of the playlist}"
 			}
-		},
+		}
 	},
 	'Playlist': {
 		'copyTolibraryPlaylist': {
@@ -234,7 +245,6 @@ var asReferences = {
 				"sort_direction":"\"ASC\" for ascending ou \"DESC\" for descending"
 			}
 		},
-		'removeMissingPlaylist': {'help': unknowHelp, 'payload': {}},
 		'renamePlaylist': {
 			'help': 'Rename a playlist',
 			'payload': {
@@ -250,7 +260,6 @@ var asReferences = {
 				"library":"one of \"personal\" or \"shared\" (default \"personal\")",
 			}
 		},
-		'saveSearchPlaylist': {'help': unknowHelp, 'payload': {}},
 		'updatesmartPlaylist': {
 			'help': 'Update a smart playlist',
 			'payload': {
@@ -282,12 +291,6 @@ var asReferences = {
 		}
 	},
 	'Proxy': {
-		'deleteSonginfoProxy': {'help': unknowHelp, 'payload': {}},
-		'getSonginfoProxy': {'help': unknowHelp, 'payload': {}},
-		'getStreamIdProxy': {'help': unknowHelp, 'payload': {}},
-		'stream': {'help': unknowHelp, 'payload': {}},
-		'streamProxy': {'help': unknowHelp, 'payload': {}},
-		'transcodeStream': {'help': unknowHelp, 'payload': {}},
 	},
 	'Pin': {
 		'pin': {
@@ -329,7 +332,7 @@ var asReferences = {
 			'payload': {
 				"items":"[] array of pin's id",
 			}
-		},
+		}
 	},
 	'Radio': {
 		'addRadio': {
@@ -475,38 +478,13 @@ var asReferences = {
 				"id":"id of the song (required)",
 				"enable_sharing":"true or false"
 			}
-		},
-	}
+		}
+	},
+	'Unknown': {}
 };
-var asKeysReferences = Object.keys(asReferences);
 
-function provideReferences(RED) {
+unknownCalls.forEach(function(c) {
+	asReferences['Unknown'][c] = {'help': unknowHelp, 'payload': {}}
+})
 
-	// Provide list of methods
-	RED.httpAdmin.get('/syno/audiostation/references', function(req, res, next){
-		var arr = {};
-		for( var g in asKeysReferences ) {
-			arr[asKeysReferences[g]] = Object.keys(asReferences[asKeysReferences[g]]);
-		}
-		res.end(JSON.stringify(arr));
-		return;
-	});
-
-	// Returns infos for a given method reference.
-	RED.httpAdmin.get('/syno/audiostation/references/:reference', function(req, res, next){
-		var ref = req.params.reference;
-		var arr = {};
-
-		for( var g in asKeysReferences ) {
-			if( asReferences[asKeysReferences[g]][ref] != null ) {
-				arr = asReferences[asKeysReferences[g]][ref];
-				break;
-			}
-		}
-
-		res.end(JSON.stringify(arr));
-		return;
-	});
-}
-
-module.exports.provideReferences = provideReferences;
+module.exports = asReferences;

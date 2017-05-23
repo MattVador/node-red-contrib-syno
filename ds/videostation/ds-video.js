@@ -1,11 +1,11 @@
 module.exports = function(RED) {
-	var asReferences = require('./ds-audio-references.js');
+	var vsReferences = require('./ds-video-references.js');
 	var dsUtils = require('./../ds-utils.js');
-
+	
 	/************/
-	// DS Audio //
+	// DS Video //
 	/************/
-	function DS_Audio_Node(config) {
+	function DS_Video_Node(config) {
 		RED.nodes.createNode(this, config);
 
 		var node = this;
@@ -37,7 +37,7 @@ module.exports = function(RED) {
 					return;
 				}
 
-				node.dsmNode.syno.as[topic](payload, function(error, data) {
+				node.dsmNode.syno.vs[topic](payload, function(error, data) {
 					if( error )
 						node.error(error);
 					else {
@@ -51,10 +51,10 @@ module.exports = function(RED) {
 		}
 	}
 
-	RED.nodes.registerType("DS Audio", DS_Audio_Node);
+	RED.nodes.registerType("DS Video", DS_Video_Node);
 
 	/* ---------------------------------------------------------------------------
 	 * Backend informations
 	 * -------------------------------------------------------------------------*/
-	dsUtils.provideReferences(RED, 'audiostation', asReferences);
+	dsUtils.provideReferences(RED, 'videostation', vsReferences);
 };

@@ -1,11 +1,16 @@
 {
 	"name": "node-red-contrib-syno",
-	"version": "0.0.1",
+	"version": "0.1.0",
 	"description": "Node-RED node for synology (based on nodejs syno).",
 	"node-red": {
 		"nodes": {
 			"ds-config": "ds/ds-config.js",
-			"ds-audiostation": "ds/audiostation/ds-audio.js"
+			"ds-audiostation": "ds/audiostation/ds-audio.js",
+			"ds-cam": "ds/cam/ds-cam.js",
+			"ds-downloadstation": "ds/downloadstation/ds-download.js",
+			"ds-dsm": "ds/dsm/ds-dsm.js",
+			"ds-filestation": "ds/filestation/ds-file.js",
+			"ds-videostation": "ds/videostation/ds-video.js"
 		}
 	},
 	"dependencies": {
@@ -26,6 +31,11 @@
 	"keywords": [
 		"node-red",
 		"synology",
-		"ds audio"
+		"ds audio",
+		"ds cam",
+		"ds download",
+		"ds dsm",
+		"ds file",
+		"ds video"
 	]
 }

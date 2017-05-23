@@ -1,11 +1,11 @@
 module.exports = function(RED) {
-	var asReferences = require('./ds-audio-references.js');
+	var dlReferences = require('./ds-download-references.js');
 	var dsUtils = require('./../ds-utils.js');
 
-	/************/
-	// DS Audio //
-	/************/
-	function DS_Audio_Node(config) {
+	/***************/
+	// DS Download //
+	/***************/
+	function DS_Download_Node(config) {
 		RED.nodes.createNode(this, config);
 
 		var node = this;
@@ -37,7 +37,7 @@ module.exports = function(RED) {
 					return;
 				}
 
-				node.dsmNode.syno.as[topic](payload, function(error, data) {
+				node.dsmNode.syno.dl[topic](payload, function(error, data) {
 					if( error )
 						node.error(error);
 					else {
@@ -50,11 +50,11 @@ module.exports = function(RED) {
 			this.error(RED._("syno.errors.missing-config"));
 		}
 	}
-
-	RED.nodes.registerType("DS Audio", DS_Audio_Node);
+	RED.nodes.registerType("DS Download", DS_Download_Node);
 
 	/* ---------------------------------------------------------------------------
 	 * Backend informations
 	 * -------------------------------------------------------------------------*/
-	dsUtils.provideReferences(RED, 'audiostation', asReferences);
+	dsUtils.provideReferences(RED, 'downloadstation', dlReferences);
+
 };
